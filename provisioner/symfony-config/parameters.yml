@@ -11,3 +11,4 @@ parameters:
     mailer_password: null
     secret: PutYourSoSoSoFckingSecretHere
     shibby.iframely.apikey: PutYourIframelyApiKeyHere
+    google_analytics_identity:
