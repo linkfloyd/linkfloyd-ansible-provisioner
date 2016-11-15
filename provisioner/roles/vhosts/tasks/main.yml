@@ -1,0 +1,11 @@
+---
+- name: download adminer
+  get_url: url=https://www.adminer.org/static/download/4.2.5/adminer-4.2.5-mysql-en.php dest=/var/www/html/adminer.php mode=0755
+
+- name: "Copy vhosts"
+  copy: src={{ item.path }} dest=/etc/nginx/sites-enabled
+  when: "'dev' in group_names"
+  with_items: "{{ dev_vhosts }}"
+
+- name: "Ensure Nginx server service restarted"
+  service: name=nginx state=restarted

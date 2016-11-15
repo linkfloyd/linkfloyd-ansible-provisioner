@@ -1,0 +1,3 @@
+dev_vhosts:
+    - { name: 'default', path: 'vhosts/dev/default' }
+    - { name: 'lf.dev', path: 'vhosts/dev/lf.dev' }

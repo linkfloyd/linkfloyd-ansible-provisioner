@@ -1,0 +1,16 @@
+---
+
+- name: Install composer proxy server
+  command: composer global require "hirak/prestissimo:^0.3"
+  run_once: true
+
+- name: Install symfony composer dependencies
+  composer: command=install working_dir=/var/www/linkfloyd-php prefer_dist=true no-dev=no
+  run_once: true
+
+- name: Copy smyfony default parameters file for development
+  copy: src=symfony-config/parameters.yml dest=/var/www/linkfloyd-php/app/config/parameters.yml
+  run_once: true
+
+- name: Run symfony migrations
+  command: /var/www/linkfloyd-php/bin/console doctrine:migrations:migrate --no-interaction

@@ -1,0 +1,49 @@
+---
+- name: "Ensure hostname set correctly"
+  hostname: name={{ inventory_hostname }}
+
+- name: "Ensure locales exists"
+  locale_gen: name={{item}} state=present
+  with_items: "{{locales}}"
+
+- name: "Ensure timezone set correctly"
+  copy: content={{timezone}}
+        dest=/etc/timezone
+        owner=root
+        group=root
+        mode=0644
+        backup=yes
+
+- name: "Ensure timezone configured"
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+
+- name: "Ensure password authentication disabled"
+  lineinfile: dest="/etc/ssh/sshd_config" regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
+  register: sshd_config_changed
+
+- name: "Ensure OpenSSH server service restarted"
+  service: name=ssh state=restarted
+  when: sshd_config_changed | changed
+
+# Skipping network IPv4/6 configuration. 
+
+- name: "Ensure IPv4 addresses added to hosts file"
+  lineinfile: dest="/etc/hosts" line="{{ansible_default_ipv4.address}} {{inventory_hostname}}"
+
+- name: "Ensure IPv6 addresses added to hosts file"
+  lineinfile: dest="/etc/hosts" line="{{ansible_default_ipv6.address}} {{inventory_hostname}}"
+  when: ansible_default_ipv6.address is defined
+
+- name: "Ensure dotdeb GnuPG key installed"
+  apt_key: url="http://www.dotdeb.org/dotdeb.gpg" state=present
+
+- name: "Ensure dotdeb repositories added"
+  apt_repository: repo="{{ item }}" state=present update_cache=yes
+  with_items: "{{dotdeb_main_repositories}}"
+
+- name: "Ensure apt cache updated"
+  apt: update_cache=yes
+
+- name: "Ensure that some basic packages are installed"
+  apt: pkg={{ item }} state=present force=yes
+  with_items: "{{basic_packages}}"

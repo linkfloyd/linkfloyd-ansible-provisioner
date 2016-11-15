@@ -1,0 +1,32 @@
+---
+- name: "Ensure stack packages are installed"
+  apt: pkg={{ item }} state=present force=yes
+  with_items: "{{stack_packages}}"
+
+- name: "Ensure PHP packages are installed"
+  apt: pkg={{ item }} state=present force=yes
+  with_items: "{{php_packages}}"
+
+- name: "Ensure php7.0-fpm .ini configuration parameters set correctly"
+  lineinfile: dest="{{ php7_fpm_configuration_file }}" regexp="^;?{{ item.name }} =" line="{{ item.name  }} = {{ item.value }}"
+  with_items: "{{php7_fpm_settings}}"
+
+- name: "Ensure php7.0-cli .ini configuration parameters set correctly"
+  lineinfile: dest="{{ php7_cli_configuration_file }}" regexp="^;?{{ item.name }} =" line="{{ item.name  }} = {{ item.value }}"
+  with_items: "{{php7_cli_settings}}"
+
+- name: "Ensure php7.0-fpm www-pool configuration parameters set correctly"
+  lineinfile: dest="{{ php7_fpm_pool_configuration_file }}" regexp="^;?{{ item.name }} =" line="{{ item.name  }} = {{ item.value }}"
+  with_items: "{{php7_fpm_pool_settings}}"
+
+- name: "Ensure PHP7.0-FPM server service restarted"
+  service: name=php7.0-fpm state=restarted
+
+- name: "download/update composer.phar"
+  get_url: url=https://getcomposer.org/composer.phar dest=/usr/local/bin/composer mode=0740
+
+- name: "Make composer runnable"
+  command: chmod a+x /usr/local/bin/composer
+
+- name: "Make composer runnable for www-data"
+  command: chown www-data.www-data /usr/local/bin/composer

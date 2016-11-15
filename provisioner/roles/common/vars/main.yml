@@ -1,0 +1,20 @@
+---
+dotdeb_main_repositories:
+    - 'deb http://packages.dotdeb.org jessie all'
+    - 'deb-src http://packages.dotdeb.org jessie all'
+
+basic_packages:
+    - curl
+    - vim
+    - htop
+    - git
+    - syslog-ng
+    - zsh
+    - unzip
+    - sudo
+
+locales:
+    - tr_TR.UTF-8
+
+timezone: 'Europe/Istanbul'
+

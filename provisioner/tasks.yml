@@ -1,0 +1,25 @@
+- name: "common | setup common tasks"
+  user: root
+  sudo: true
+  hosts:
+    - dev
+  roles:
+    - common
+    - lemp
+    - vhosts
+
+- name: "mysql setup"
+  user: root
+  sudo: true
+  hosts:
+    - dev
+  roles:
+    - mysql
+
+- name: "setup linkfloyd - symfony"
+  user: root
+  sudo: true
+  hosts:
+    - dev
+  roles:
+    - symfony

@@ -1,0 +1,4 @@
+vagrant/.vagrant
+*.deb
+provisioner/*.retry
+.idea
