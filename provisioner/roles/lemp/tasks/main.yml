@@ -7,6 +7,9 @@
   apt: pkg={{ item }} state=present force=yes
   with_items: "{{php_packages}}"
 
+- name: "Downloading cacert.pem file for curl"
+  get_url: url=https://curl.haxx.se/ca/cacert.pem dest=/root/cacert.pem mode=0740
+
 - name: "Ensure php7.0-fpm .ini configuration parameters set correctly"
   lineinfile: dest="{{ php7_fpm_configuration_file }}" regexp="^;?{{ item.name }} =" line="{{ item.name  }} = {{ item.value }}"
   with_items: "{{php7_fpm_settings}}"

@@ -38,6 +38,7 @@ php7_fpm_settings:
 
 php7_cli_settings:
     - { name: 'date.timezone', value: 'Europe/Istanbul' }
+    - { name: 'curl.cainfo', value: '/root/cacert.pem' }
 
 php7_fpm_pool_settings:
     - { name: 'listen', value: '127.0.0.1:9000' }
