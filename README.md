@@ -2,11 +2,15 @@
 Development
 -----------
 
- # Clone linkfloyd repository to ~/htdocs/linkfloyd-php
+ # Clone linkfloyd repository to `~/htdocs/linkfloyd-php`
  
+    git clone https://github.com/linkfloyd/linkfloyd-php.git ~/htdocs/linkfloyd-php
+    
+    OR
+    
     git clone git@github.com:linkfloyd/linkfloyd-php.git ~/htdocs/linkfloyd-php
 
- # Set IP addresses
+ # Set IP address for `lf.dev` on your hosts file. (/etc/hosts)
  
     192.168.56.102 lf.dev
 
@@ -22,8 +26,14 @@ Development
  
     sudo pip install ansible
     
+ # Clone this repository. (clone path doesnt matter)
+ 
+    git clone https://github.com/linkfloyd/linkfloyd-ansible-provisioner.git
+    
  # Run vagrant   
  
+    cd linkfloyd-ansible-provisioner
+    
     cd vagrant
     
     vagrant up
